@@ -33,3 +33,16 @@ class UnitParser:
             raise ParseError(f"unexpected token {token.value!r} in {self.expression!r}")
         return unit
 
+    def _tokenize(self, expression: str) -> list[Token]:
+        normalized = expression.strip().replace(" ", "").replace("**", "^").replace(".", "*")
+        tokens: list[Token] = []
+        position = 0
+        while position < len(normalized):
+            match = TOKEN_PATTERN.match(normalized, position)
+            if match is None:
+                raise ParseError(f"unexpected character {normalized[position]!r} in {expression!r}")
+            value = match.group(0)
+            kind = "operator" if value in {"*", "/", "^", "(", ")"} else "integer" if value.lstrip("+-").isdigit() else "name"
+            tokens.append(Token(kind, value))
+            position = match.end()
+        return tokens
