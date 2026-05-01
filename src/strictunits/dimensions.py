@@ -1,3 +1,5 @@
+"""Dimensions functionality for the strictunits unit converter."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -10,6 +12,7 @@ BASE_DIMENSION_LABELS = ("L", "M", "T", "I", "Theta", "N", "J")
 
 @dataclass(frozen=True)
 class Dimension:
+    """A dimension is a mathematical entity that describes the nature of a physical quantity."""
     exponents: tuple[int, ...]
     
     def __init__(self, exponents: tuple[int, ...]) -> None:
@@ -31,21 +34,26 @@ class Dimension:
         object.__setattr__(self, "exponents", values)
 
     def __mul__(self, other: "Dimension") -> "Dimension":
+        """Multiply two dimensions together."""
         return Dimension(left + right for left, right in zip(self.exponents, other.exponents))
 
     def __truediv__(self, other: "Dimension") -> "Dimension":
+        """Divide two dimensions together."""
         return Dimension(left - right for left, right in zip(self.exponents, other.exponents))
 
     def __pow__(self, power: int) -> "Dimension":
+        """Raise a dimension to a power."""
         if not isinstance(power, int):
             raise TypeError("dimensions can only be raised to integer powers")
         return Dimension(value * power for value in self.exponents)
 
     @property
     def is_dimensionless(self) -> bool:
+        """Check if a dimension is dimensionless."""
         return all(value == 0 for value in self.exponents)
 
     def reduced_form(self) -> str:
+        """Get the reduced form of a dimension."""
         if self.is_dimensionless:
             return "dimensionless"
 
@@ -57,10 +65,11 @@ class Dimension:
         return " ".join(parts)
 
     def __str__(self) -> str:
+        """Get the string representation of a dimension."""
         return self.reduced_form()
 
 
-
+# Define the base dimensions.
 Dimension.NONE = Dimension((0, 0, 0, 0, 0, 0, 0))
 Dimension.LENGTH = Dimension((1, 0, 0, 0, 0, 0, 0))
 Dimension.MASS = Dimension((0, 1, 0, 0, 0, 0, 0))
