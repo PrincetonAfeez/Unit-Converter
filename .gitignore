@@ -8,6 +8,7 @@ __pycache__/
 venv/
 env/
 ENV/
+.python-version
 
 # Distribution / packaging
 build/
@@ -21,10 +22,14 @@ pip-wheel-metadata/
 .coverage
 .coverage.*
 htmlcov/
+coverage.xml
+.hypothesis/
 
 # Type checker / linter caches
 .mypy_cache/
 .ruff_cache/
+.tox/
+.nox/
 
 # IDE/editor files
 .vscode/
