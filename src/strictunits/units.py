@@ -59,3 +59,13 @@ class Unit:
             dimension=self.dimension / other.dimension,
             scale=self.scale / other.scale,
         )
+
+    def __pow__(self, power: int) -> "Unit":
+        if self.is_affine and power != 1:
+            raise UnitError(f"affine unit {self.symbol!r} cannot be raised to a power")
+        return Unit(
+            name=f"{self.name}^{power}",
+            symbol=f"{self.symbol}^{power}",
+            dimension=self.dimension**power,
+            scale=self.scale**power,
+        )
