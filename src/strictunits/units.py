@@ -34,3 +34,9 @@ class Unit:
         base_value = self.to_base(value)
         return target.from_base(base_value)
 
+    def to_base(self, value: Decimal) -> Decimal:
+        return (value * self.scale) + self.offset
+
+    def from_base(self, value: Decimal) -> Decimal:
+        return (value - self.offset) / self.scale
+
