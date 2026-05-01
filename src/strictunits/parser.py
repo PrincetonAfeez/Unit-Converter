@@ -1,3 +1,5 @@
+"""Parser functionality for the strictunits unit converter."""
+
 from __future__ import annotations
 
 import re
@@ -10,13 +12,16 @@ from .units import Unit
 
 TOKEN_PATTERN = re.compile(r"[A-Za-z_][A-Za-z_0-9]*|[-+]?\d+|\^|[*/()]")
 
+
 @dataclass(frozen=True)
 class Token:
+    """A token is a lexical unit of a unit expression."""
     kind: str
     value: str
 
 
 class UnitParser:
+    """A unit parser is a parser for unit expressions."""
     def __init__(self, expression: str, registry: UnitRegistry) -> None:
         self.expression = expression
         self.registry = registry
@@ -34,6 +39,7 @@ class UnitParser:
         return unit
 
     def _tokenize(self, expression: str) -> list[Token]:
+        """Tokenize a unit expression."""
         normalized = expression.strip().replace(" ", "").replace("**", "^").replace(".", "*")
         tokens: list[Token] = []
         position = 0
@@ -48,6 +54,7 @@ class UnitParser:
         return tokens
 
     def _parse_expression(self) -> Unit:
+        """Parse a unit expression."""
         unit = self._parse_term()
         while True:
             token = self._peek()
@@ -64,6 +71,7 @@ class UnitParser:
             raise ParseError(f"expected '*', '/', or end of expression, got {token.value!r}")
 
     def _parse_term(self) -> Unit:
+        """Parse a unit term."""
         unit = self._parse_factor()
         token = self._peek()
         if token is not None and token.value == "^":
@@ -75,6 +83,7 @@ class UnitParser:
         return unit
 
     def _parse_factor(self) -> Unit:
+        """Parse a unit factor."""
         token = self._advance()
         if token is None:
             raise ParseError("unexpected end of unit expression")
@@ -89,15 +98,19 @@ class UnitParser:
         raise ParseError(f"expected unit name or group, got {token.value!r}")
 
     def _peek(self) -> Token | None:
+        """Peek at the next token."""
         if self.index >= len(self.tokens):
             return None
         return self.tokens[self.index]
 
     def _advance(self) -> Token | None:
+        """Advance to the next token."""
         token = self._peek()
         if token is not None:
             self.index += 1
         return token
 
+
 def parse_unit(expression: str, registry: UnitRegistry | None = None) -> Unit:
+    """Parse a unit expression."""
     return UnitParser(expression, registry or default_registry()).parse()
