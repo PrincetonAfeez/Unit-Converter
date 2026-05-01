@@ -45,3 +45,16 @@ class Dimension:
     def is_dimensionless(self) -> bool:
         return all(value == 0 for value in self.exponents)
 
+    def reduced_form(self) -> str:
+        if self.is_dimensionless:
+            return "dimensionless"
+
+        parts = []
+        for label, exponent in zip(BASE_DIMENSION_LABELS, self.exponents):
+            if exponent == 0:
+                continue
+            parts.append(label if exponent == 1 else f"{label}^{exponent}")
+        return " ".join(parts)
+
+    def __str__(self) -> str:
+        return self.reduced_form()
