@@ -58,3 +58,10 @@ class UnitRegistry:
         self.add(unit, aliases=aliases, prefixable=prefixable)
         return unit
 
+    def add(self, unit: Unit, *, aliases: tuple[str, ...] = (), prefixable: bool = False) -> None:
+        names = (unit.symbol, unit.name, *aliases)
+        for name in names:
+            self._units[name] = unit
+            if prefixable:
+                self._prefixable[name] = unit
+
