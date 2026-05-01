@@ -73,3 +73,18 @@ class UnitParser:
                 raise ParseError("expected integer exponent after '^'")
             unit = unit ** int(exponent.value)
         return unit
+
+    def _parse_factor(self) -> Unit:
+        token = self._advance()
+        if token is None:
+            raise ParseError("unexpected end of unit expression")
+        if token.kind == "name":
+            return self.registry.get(token.value)
+        if token.value == "(":
+            unit = self._parse_expression()
+            closing = self._advance()
+            if closing is None or closing.value != ")":
+                raise ParseError("expected ')' to close unit group")
+            return unit
+        raise ParseError(f"expected unit name or group, got {token.value!r}")
+
