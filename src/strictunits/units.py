@@ -69,3 +69,7 @@ class Unit:
             dimension=self.dimension**power,
             scale=self.scale**power,
         )
+
+    def _ensure_composable(self, other: "Unit") -> None:
+        if self.is_affine or other.is_affine:
+            raise UnitError("affine units such as Celsius and Fahrenheit cannot be used in compound units")
