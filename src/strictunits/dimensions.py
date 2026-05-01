@@ -40,3 +40,8 @@ class Dimension:
         if not isinstance(power, int):
             raise TypeError("dimensions can only be raised to integer powers")
         return Dimension(value * power for value in self.exponents)
+
+    @property
+    def is_dimensionless(self) -> bool:
+        return all(value == 0 for value in self.exponents)
+
