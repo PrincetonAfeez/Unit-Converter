@@ -88,3 +88,8 @@ class UnitParser:
             return unit
         raise ParseError(f"expected unit name or group, got {token.value!r}")
 
+    def _peek(self) -> Token | None:
+        if self.index >= len(self.tokens):
+            return None
+        return self.tokens[self.index]
+
