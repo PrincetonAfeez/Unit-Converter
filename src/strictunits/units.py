@@ -11,3 +11,11 @@ def to_decimal(value: Decimal | int | str) -> Decimal:
         return value
     return Decimal(str(value))
 
+@dataclass(frozen=True)
+class Unit:
+    name: str
+    symbol: str
+    dimension: Dimension
+    scale: Decimal
+    offset: Decimal = Decimal("0")
+
