@@ -93,3 +93,8 @@ class UnitParser:
             return None
         return self.tokens[self.index]
 
+    def _advance(self) -> Token | None:
+        token = self._peek()
+        if token is not None:
+            self.index += 1
+        return token
