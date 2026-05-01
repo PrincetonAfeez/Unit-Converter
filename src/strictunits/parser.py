@@ -10,3 +10,7 @@ from .units import Unit
 
 TOKEN_PATTERN = re.compile(r"[A-Za-z_][A-Za-z_0-9]*|[-+]?\d+|\^|[*/()]")
 
+@dataclass(frozen=True)
+class Token:
+    kind: str
+    value: str
