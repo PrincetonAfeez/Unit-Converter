@@ -65,3 +65,15 @@ class UnitRegistry:
             if prefixable:
                 self._prefixable[name] = unit
 
+    def get(self, name: str) -> Unit:
+        try:
+            return self._units[name]
+        except KeyError:
+            pass
+
+        prefixed = self._get_prefixed(name)
+        if prefixed is not None:
+            return prefixed
+
+        raise UnknownUnitError(f"unknown unit {name!r}")
+
