@@ -22,3 +22,15 @@ class Unit:
     @property
     def is_affine(self) -> bool:
         return self.offset != 0
+
+    def convert_value_to(self, value: Decimal, target: "Unit") -> Decimal:        """."""
+        if self.dimension != target.dimension:
+            raise ConformabilityError(
+                "cannot convert "
+                f"{self.symbol!r} [{self.dimension.reduced_form()}] "
+                f"to {target.symbol!r} [{target.dimension.reduced_form()}]"
+            )
+
+        base_value = self.to_base(value)
+        return target.from_base(base_value)
+
