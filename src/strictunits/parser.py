@@ -98,3 +98,6 @@ class UnitParser:
         if token is not None:
             self.index += 1
         return token
+
+def parse_unit(expression: str, registry: UnitRegistry | None = None) -> Unit:
+    return UnitParser(expression, registry or default_registry()).parse()
