@@ -1,0 +1,15 @@
+{
+  "name": "StrictUnits Schema Folder",
+  "target_repository": "PrincetonAfeez/Unit-Converter",
+  "folder": "Schema",
+  "files": [
+    "README.md",
+    "conversion-request.schema.json",
+    "conversion-result.schema.json",
+    "dimension.schema.json",
+    "quantity.schema.json",
+    "registry.schema.json",
+    "unit.schema.json"
+  ],
+  "notes": "Copy the Schema folder into the repository root."
+}

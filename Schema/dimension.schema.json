@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strictunits.local/schema/dimension.schema.json",
+  "title": "StrictUnits Dimension",
+  "description": "A 7-vector SI base dimension used by StrictUnits: length, mass, time, electric current, thermodynamic temperature, amount of substance, luminous intensity.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "labels": {
+      "type": "array",
+      "description": "Optional SI base-dimension labels in StrictUnits order.",
+      "prefixItems": [
+        {
+          "const": "L"
+        },
+        {
+          "const": "M"
+        },
+        {
+          "const": "T"
+        },
+        {
+          "const": "I"
+        },
+        {
+          "const": "Theta"
+        },
+        {
+          "const": "N"
+        },
+        {
+          "const": "J"
+        }
+      ],
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "exponents": {
+      "type": "array",
+      "description": "Integer exponents for [L, M, T, I, Theta, N, J]. For example, velocity is [1, 0, -1, 0, 0, 0, 0].",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "reduced_form": {
+      "type": "string",
+      "description": "Optional display form such as 'L T^-1' or 'dimensionless'."
+    }
+  },
+  "required": [
+    "exponents"
+  ],
+  "examples": [
+    {
+      "exponents": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "reduced_form": "L"
+    },
+    {
+      "exponents": [
+        1,
+        0,
+        -1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "reduced_form": "L T^-1"
+    }
+  ]
+}

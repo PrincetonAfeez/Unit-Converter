@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strictunits.local/schema/conversion-request.schema.json",
+  "title": "StrictUnits Conversion Request",
+  "description": "Input payload for converting one value from a source unit expression to a target unit expression.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "value": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "integer"
+        }
+      ],
+      "description": "Decimal-compatible value accepted by StrictUnits. Strings are recommended for precision."
+    },
+    "from_unit": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Source unit expression, such as 'miles' or 'm/s^2'."
+    },
+    "to_unit": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Target unit expression, such as 'km' or 'ft/s^2'."
+    }
+  },
+  "required": [
+    "value",
+    "from_unit",
+    "to_unit"
+  ],
+  "examples": [
+    {
+      "value": "5",
+      "from_unit": "miles",
+      "to_unit": "km"
+    },
+    {
+      "value": "9.8",
+      "from_unit": "m/s^2",
+      "to_unit": "ft/s^2"
+    }
+  ]
+}

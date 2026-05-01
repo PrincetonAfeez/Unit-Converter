@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strictunits.local/schema/quantity.schema.json",
+  "title": "StrictUnits Quantity",
+  "description": "A numeric value paired with a unit expression or full unit object.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "value": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "integer"
+        }
+      ],
+      "description": "Decimal-compatible value accepted by StrictUnits. Strings are recommended for precision."
+    },
+    "unit": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "m/s",
+            "ft/s^2",
+            "degC"
+          ]
+        },
+        {
+          "$ref": "unit.schema.json"
+        }
+      ]
+    }
+  },
+  "required": [
+    "value",
+    "unit"
+  ],
+  "examples": [
+    {
+      "value": "9.8",
+      "unit": "m/s^2"
+    },
+    {
+      "value": "100",
+      "unit": "degC"
+    }
+  ]
+}
