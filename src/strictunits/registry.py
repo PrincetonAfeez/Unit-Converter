@@ -32,3 +32,29 @@ METRIC_PREFIXES: tuple[tuple[str, str, Decimal], ...] = (
     ("y", "yocto", Decimal("1e-24")),
 )
 
+class UnitRegistry:
+    def __init__(self) -> None:
+        self._units: dict[str, Unit] = {}
+        self._prefixable: dict[str, Unit] = {}
+
+    def register(
+        self,
+        name: str,
+        symbol: str,
+        dimension: Dimension,
+        scale: Decimal | int | str,
+        *,
+        offset: Decimal | int | str = Decimal("0"),
+        aliases: tuple[str, ...] = (),
+        prefixable: bool = False,
+    ) -> Unit:
+        unit = Unit(
+            name=name,
+            symbol=symbol,
+            dimension=dimension,
+            scale=to_decimal(scale),
+            offset=to_decimal(offset),
+        )
+        self.add(unit, aliases=aliases, prefixable=prefixable)
+        return unit
+
