@@ -19,3 +19,6 @@ class Unit:
     scale: Decimal
     offset: Decimal = Decimal("0")
 
+    @property
+    def is_affine(self) -> bool:
+        return self.offset != 0
