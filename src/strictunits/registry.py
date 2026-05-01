@@ -1,3 +1,5 @@
+"""Registry functionality for the strictunits unit converter."""
+
 from __future__ import annotations
 
 from dataclasses import replace
@@ -32,7 +34,9 @@ METRIC_PREFIXES: tuple[tuple[str, str, Decimal], ...] = (
     ("y", "yocto", Decimal("1e-24")),
 )
 
+
 class UnitRegistry:
+    """A registry of units and their relationships."""
     def __init__(self) -> None:
         self._units: dict[str, Unit] = {}
         self._prefixable: dict[str, Unit] = {}
@@ -59,6 +63,7 @@ class UnitRegistry:
         return unit
 
     def add(self, unit: Unit, *, aliases: tuple[str, ...] = (), prefixable: bool = False) -> None:
+        """Add a unit to the registry."""
         names = (unit.symbol, unit.name, *aliases)
         for name in names:
             self._units[name] = unit
@@ -66,6 +71,7 @@ class UnitRegistry:
                 self._prefixable[name] = unit
 
     def get(self, name: str) -> Unit:
+        """Get a unit from the registry."""
         try:
             return self._units[name]
         except KeyError:
@@ -85,6 +91,7 @@ class UnitRegistry:
             prefix_tokens.append((prefix_name, scale))
 
         for prefix, prefix_scale in sorted(prefix_tokens, key=lambda item: len(item[0]), reverse=True):
+            """Get a prefixed unit from the registry."""
             if not name.startswith(prefix) or len(name) == len(prefix):
                 continue
 
@@ -101,8 +108,10 @@ class UnitRegistry:
             )
         return None
 
+
 @lru_cache(maxsize=1)
 def default_registry() -> UnitRegistry:
+    """Get the default registry."""
     registry = UnitRegistry()
 
     registry.register(
@@ -151,4 +160,3 @@ def default_registry() -> UnitRegistry:
     registry.register("hertz", "Hz", frequency, "1", aliases=("hz",), prefixable=True)
 
     return registry
-
