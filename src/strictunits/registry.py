@@ -101,4 +101,54 @@ class UnitRegistry:
             )
         return None
 
+@lru_cache(maxsize=1)
+def default_registry() -> UnitRegistry:
+    registry = UnitRegistry()
+
+    registry.register(
+        "meter",
+        "m",
+        Dimension.LENGTH,
+        "1",
+        aliases=("meters", "metre", "metres"),
+        prefixable=True,
+    )
+    registry.register("inch", "in", Dimension.LENGTH, "0.0254", aliases=("inches",))
+    registry.register("foot", "ft", Dimension.LENGTH, "0.3048", aliases=("feet",))
+    registry.register("yard", "yd", Dimension.LENGTH, "0.9144", aliases=("yards",))
+    registry.register("mile", "mi", Dimension.LENGTH, "1609.344", aliases=("miles",))
+
+    registry.register("gram", "g", Dimension.MASS, "0.001", aliases=("grams",), prefixable=True)
+    registry.register("pound", "lb", Dimension.MASS, "0.45359237", aliases=("pounds",))
+
+    registry.register("second", "s", Dimension.TIME, "1", aliases=("seconds", "sec"), prefixable=True)
+    registry.register("minute", "min", Dimension.TIME, "60", aliases=("minutes",))
+    registry.register("hour", "h", Dimension.TIME, "3600", aliases=("hours", "hr", "hrs"))
+
+    registry.register("ampere", "A", Dimension.CURRENT, "1", aliases=("amp", "amps"), prefixable=True)
+    registry.register("kelvin", "K", Dimension.TEMPERATURE, "1", aliases=("kelvins",), prefixable=True)
+    registry.register("mole", "mol", Dimension.AMOUNT, "1", aliases=("moles",), prefixable=True)
+    registry.register("candela", "cd", Dimension.LUMINOSITY, "1", aliases=("candelas",), prefixable=True)
+
+    registry.register("celsius", "degC", Dimension.TEMPERATURE, "1", offset="273.15", aliases=("C",))
+    registry.register(
+        "fahrenheit",
+        "degF",
+        Dimension.TEMPERATURE,
+        Decimal(5) / Decimal(9),
+        offset=Decimal("273.15") - (Decimal(32) * Decimal(5) / Decimal(9)),
+        aliases=("F",),
+    )
+
+    force = Dimension.MASS * Dimension.LENGTH / (Dimension.TIME**2)
+    energy = force * Dimension.LENGTH
+    power = energy / Dimension.TIME
+    frequency = Dimension.NONE / Dimension.TIME
+
+    registry.register("newton", "N", force, "1", aliases=("newtons",), prefixable=True)
+    registry.register("joule", "J", energy, "1", aliases=("joules",), prefixable=True)
+    registry.register("watt", "W", power, "1", aliases=("watts",), prefixable=True)
+    registry.register("hertz", "Hz", frequency, "1", aliases=("hz",), prefixable=True)
+
+    return registry
 
