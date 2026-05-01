@@ -77,3 +77,28 @@ class UnitRegistry:
 
         raise UnknownUnitError(f"unknown unit {name!r}")
 
+    def _get_prefixed(self, name: str) -> Unit | None:
+        """Get a prefixed unit from the registry."""
+        prefix_tokens: list[tuple[str, Decimal]] = []
+        for symbol, prefix_name, scale in METRIC_PREFIXES:
+            prefix_tokens.append((symbol, scale))
+            prefix_tokens.append((prefix_name, scale))
+
+        for prefix, prefix_scale in sorted(prefix_tokens, key=lambda item: len(item[0]), reverse=True):
+            if not name.startswith(prefix) or len(name) == len(prefix):
+                continue
+
+            suffix = name[len(prefix) :]
+            base = self._prefixable.get(suffix)
+            if base is None or base.is_affine:
+                continue
+
+            return replace(
+                base,
+                name=name,
+                symbol=name,
+                scale=base.scale * prefix_scale,
+            )
+        return None
+
+
