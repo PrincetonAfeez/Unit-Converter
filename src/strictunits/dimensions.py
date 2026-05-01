@@ -58,3 +58,14 @@ class Dimension:
 
     def __str__(self) -> str:
         return self.reduced_form()
+
+
+
+Dimension.NONE = Dimension((0, 0, 0, 0, 0, 0, 0))
+Dimension.LENGTH = Dimension((1, 0, 0, 0, 0, 0, 0))
+Dimension.MASS = Dimension((0, 1, 0, 0, 0, 0, 0))
+Dimension.TIME = Dimension((0, 0, 1, 0, 0, 0, 0))
+Dimension.CURRENT = Dimension((0, 0, 0, 1, 0, 0, 0))
+Dimension.TEMPERATURE = Dimension((0, 0, 0, 0, 1, 0, 0))
+Dimension.AMOUNT = Dimension((0, 0, 0, 0, 0, 1, 0))
+Dimension.LUMINOSITY = Dimension((0, 0, 0, 0, 0, 0, 1))
