@@ -46,3 +46,19 @@ class UnitParser:
             tokens.append(Token(kind, value))
             position = match.end()
         return tokens
+
+    def _parse_expression(self) -> Unit:
+        unit = self._parse_term()
+        while True:
+            token = self._peek()
+            if token is None or token.value == ")":
+                return unit
+            if token.value == "*":
+                self._advance()
+                unit = unit * self._parse_term()
+                continue
+            if token.value == "/":
+                self._advance()
+                unit = unit / self._parse_term()
+                continue
+            raise ParseError(f"expected '*', '/', or end of expression, got {token.value!r}")
