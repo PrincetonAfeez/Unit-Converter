@@ -40,3 +40,13 @@ class Unit:
     def from_base(self, value: Decimal) -> Decimal:
         return (value - self.offset) / self.scale
 
+
+    def __mul__(self, other: "Unit") -> "Unit":
+        self._ensure_composable(other)
+        return Unit(
+            name=f"{self.name}*{other.name}",
+            symbol=f"{self.symbol}*{other.symbol}",
+            dimension=self.dimension * other.dimension,
+            scale=self.scale * other.scale,
+        )
+
