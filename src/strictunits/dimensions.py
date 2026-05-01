@@ -23,3 +23,20 @@ class Dimension:
     TEMPERATURE: ClassVar["Dimension"]
     AMOUNT: ClassVar["Dimension"]
     LUMINOSITY: ClassVar["Dimension"]
+
+    def __init__(self, exponents: Iterable[int]) -> None:
+        values = tuple(int(value) for value in exponents)
+        if len(values) != BASE_DIMENSION_COUNT:
+            raise ValueError(f"expected {BASE_DIMENSION_COUNT} dimension exponents, got {len(values)}")
+        object.__setattr__(self, "exponents", values)
+
+    def __mul__(self, other: "Dimension") -> "Dimension":
+        return Dimension(left + right for left, right in zip(self.exponents, other.exponents))
+
+    def __truediv__(self, other: "Dimension") -> "Dimension":
+        return Dimension(left - right for left, right in zip(self.exponents, other.exponents))
+
+    def __pow__(self, power: int) -> "Dimension":
+        if not isinstance(power, int):
+            raise TypeError("dimensions can only be raised to integer powers")
+        return Dimension(value * power for value in self.exponents)
