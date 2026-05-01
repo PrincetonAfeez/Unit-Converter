@@ -62,3 +62,14 @@ class UnitParser:
                 unit = unit / self._parse_term()
                 continue
             raise ParseError(f"expected '*', '/', or end of expression, got {token.value!r}")
+
+    def _parse_term(self) -> Unit:
+        unit = self._parse_factor()
+        token = self._peek()
+        if token is not None and token.value == "^":
+            self._advance()
+            exponent = self._advance()
+            if exponent is None or exponent.kind != "integer":
+                raise ParseError("expected integer exponent after '^'")
+            unit = unit ** int(exponent.value)
+        return unit
