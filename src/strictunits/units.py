@@ -50,3 +50,12 @@ class Unit:
             scale=self.scale * other.scale,
         )
 
+
+    def __truediv__(self, other: "Unit") -> "Unit":
+        self._ensure_composable(other)
+        return Unit(
+            name=f"{self.name}/{other.name}",
+            symbol=f"{self.symbol}/{other.symbol}",
+            dimension=self.dimension / other.dimension,
+            scale=self.scale / other.scale,
+        )
