@@ -1,0 +1,83 @@
+This is a strict scientific unit converter in Python with a layered architecture. The core domain models units, quantities, and dimensions separately from parsing and CLI concerns. The converter performs dimensional compatibility checks mathematically rather than by string matching, and unit definitions are loaded from data files instead of being hardcoded
+a strict unit converter that supports:
+
+base dimensions for a small set of categories:
+length
+mass
+time
+speed
+force
+strict compatibility checking
+allow m -> km
+reject m -> kg
+compound units:
+m/s
+kg*m/s^2
+metric prefixes:
+milli, centi, kilo
+small CLI:
+convert 5 km to m
+convert 10 m/s to km/h
+unit definitions loaded from JSON
+tests for parsing, compatibility, and conversion
+
+It should show:
+
+dataclasses
+enums
+type hints
+custom exceptions
+separation of concerns
+clean module boundaries
+test-driven thinking
+
+Best architecture for this version
+
+Use 3 layers, but keep each one tiny.
+
+core/
+
+Pure logic only.
+
+Files:
+
+dimensions.py
+units.py
+quantity.py
+registry.py
+converter.py
+exceptions.py
+
+Responsibilities:
+
+represent dimensions
+represent units
+perform conversions
+enforce compatibility
+parsing/
+
+Small parser for unit strings.
+
+Files:
+
+tokenizer.py
+parser.py
+
+Responsibilities:
+
+parse km
+parse m/s
+parse kg*m/s^2
+cli/
+
+Very thin interface.
+
+Files:
+
+main.py
+
+Responsibilities:
+
+read args
+call converter service
+print result or error

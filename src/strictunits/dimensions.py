@@ -1,0 +1,80 @@
+"""Dimensions functionality for the strictunits unit converter."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import ClassVar, Iterable
+
+
+BASE_DIMENSION_COUNT = 7
+BASE_DIMENSION_LABELS = ("L", "M", "T", "I", "Theta", "N", "J")
+
+
+@dataclass(frozen=True)
+class Dimension:
+    """A dimension is a mathematical entity that describes the nature of a physical quantity."""
+    exponents: tuple[int, ...]
+    
+    def __init__(self, exponents: tuple[int, ...]) -> None:
+        self.exponents = exponents
+
+    NONE: ClassVar["Dimension"]
+    LENGTH: ClassVar["Dimension"]
+    MASS: ClassVar["Dimension"]
+    TIME: ClassVar["Dimension"]
+    CURRENT: ClassVar["Dimension"]
+    TEMPERATURE: ClassVar["Dimension"]
+    AMOUNT: ClassVar["Dimension"]
+    LUMINOSITY: ClassVar["Dimension"]
+
+    def __init__(self, exponents: Iterable[int]) -> None:
+        values = tuple(int(value) for value in exponents)
+        if len(values) != BASE_DIMENSION_COUNT:
+            raise ValueError(f"expected {BASE_DIMENSION_COUNT} dimension exponents, got {len(values)}")
+        object.__setattr__(self, "exponents", values)
+
+    def __mul__(self, other: "Dimension") -> "Dimension":
+        """Multiply two dimensions together."""
+        return Dimension(left + right for left, right in zip(self.exponents, other.exponents))
+
+    def __truediv__(self, other: "Dimension") -> "Dimension":
+        """Divide two dimensions together."""
+        return Dimension(left - right for left, right in zip(self.exponents, other.exponents))
+
+    def __pow__(self, power: int) -> "Dimension":
+        """Raise a dimension to a power."""
+        if not isinstance(power, int):
+            raise TypeError("dimensions can only be raised to integer powers")
+        return Dimension(value * power for value in self.exponents)
+
+    @property
+    def is_dimensionless(self) -> bool:
+        """Check if a dimension is dimensionless."""
+        return all(value == 0 for value in self.exponents)
+
+    def reduced_form(self) -> str:
+        """Get the reduced form of a dimension."""
+        if self.is_dimensionless:
+            return "dimensionless"
+
+        parts = []
+        for label, exponent in zip(BASE_DIMENSION_LABELS, self.exponents):
+            if exponent == 0:
+                continue
+            parts.append(label if exponent == 1 else f"{label}^{exponent}")
+        return " ".join(parts)
+
+    def __str__(self) -> str:
+        """Get the string representation of a dimension."""
+        return self.reduced_form()
+
+
+# Define the base dimensions.
+Dimension.NONE = Dimension((0, 0, 0, 0, 0, 0, 0))
+Dimension.LENGTH = Dimension((1, 0, 0, 0, 0, 0, 0))
+Dimension.MASS = Dimension((0, 1, 0, 0, 0, 0, 0))
+Dimension.TIME = Dimension((0, 0, 1, 0, 0, 0, 0))
+Dimension.CURRENT = Dimension((0, 0, 0, 1, 0, 0, 0))
+Dimension.TEMPERATURE = Dimension((0, 0, 0, 0, 1, 0, 0))
+Dimension.AMOUNT = Dimension((0, 0, 0, 0, 0, 1, 0))
+Dimension.LUMINOSITY = Dimension((0, 0, 0, 0, 0, 0, 1))

@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strictunits.local/schema/registry.schema.json",
+  "title": "StrictUnits Registry",
+  "description": "A portable registry definition for StrictUnits units and metric prefixes.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Registry schema or data version.",
+      "default": "0.1.0"
+    },
+    "dimension_labels": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "L"
+        },
+        {
+          "const": "M"
+        },
+        {
+          "const": "T"
+        },
+        {
+          "const": "I"
+        },
+        {
+          "const": "Theta"
+        },
+        {
+          "const": "N"
+        },
+        {
+          "const": "J"
+        }
+      ],
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "metric_prefixes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scale": {
+            "type": "string",
+            "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$"
+          }
+        },
+        "required": [
+          "symbol",
+          "name",
+          "scale"
+        ]
+      },
+      "default": []
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "$ref": "unit.schema.json"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "version",
+    "dimension_labels",
+    "units"
+  ],
+  "examples": [
+    {
+      "version": "0.1.0",
+      "dimension_labels": [
+        "L",
+        "M",
+        "T",
+        "I",
+        "Theta",
+        "N",
+        "J"
+      ],
+      "metric_prefixes": [
+        {
+          "symbol": "k",
+          "name": "kilo",
+          "scale": "1e3"
+        },
+        {
+          "symbol": "m",
+          "name": "milli",
+          "scale": "1e-3"
+        }
+      ],
+      "units": [
+        {
+          "name": "meter",
+          "symbol": "m",
+          "dimension": {
+            "exponents": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "scale": "1",
+          "offset": "0",
+          "aliases": [
+            "meters",
+            "metre",
+            "metres"
+          ],
+          "prefixable": true
+        }
+      ]
+    }
+  ]
+}

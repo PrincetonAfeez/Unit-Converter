@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "strictunits"
+version = "0.1.0"
+description = "A strict scientific unit converter with dimensional analysis."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "StrictUnits" }]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
+
+[project.scripts]
+strictunits = "strictunits.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.coverage.run]
+source = ["src/strictunits"]
+branch = true

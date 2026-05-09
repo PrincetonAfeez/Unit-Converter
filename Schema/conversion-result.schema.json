@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strictunits.local/schema/conversion-result.schema.json",
+  "title": "StrictUnits Conversion Result",
+  "description": "Output payload describing the converted value and the source/target units.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "value": {
+      "type": "string",
+      "description": "Converted Decimal value as a string to preserve precision.",
+      "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$"
+    },
+    "from_unit": {
+      "$ref": "unit.schema.json"
+    },
+    "to_unit": {
+      "$ref": "unit.schema.json"
+    },
+    "source": {
+      "$ref": "quantity.schema.json"
+    },
+    "target": {
+      "$ref": "quantity.schema.json"
+    }
+  },
+  "required": [
+    "value",
+    "from_unit",
+    "to_unit",
+    "source",
+    "target"
+  ],
+  "examples": [
+    {
+      "value": "8.04672",
+      "from_unit": {
+        "name": "mile",
+        "symbol": "mi",
+        "dimension": {
+          "exponents": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "scale": "1609.344",
+        "offset": "0",
+        "aliases": [
+          "miles"
+        ],
+        "prefixable": false
+      },
+      "to_unit": {
+        "name": "km",
+        "symbol": "km",
+        "dimension": {
+          "exponents": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "scale": "1000",
+        "offset": "0",
+        "aliases": [],
+        "prefixable": false
+      },
+      "source": {
+        "value": "5",
+        "unit": "miles"
+      },
+      "target": {
+        "value": "8.04672",
+        "unit": "km"
+      }
+    }
+  ]
+}

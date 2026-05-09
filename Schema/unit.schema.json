@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strictunits.local/schema/unit.schema.json",
+  "title": "StrictUnits Unit",
+  "description": "A unit definition with a name, symbol, dimension vector, scale to base units, and optional affine offset.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "examples": [
+        "meter",
+        "fahrenheit"
+      ]
+    },
+    "symbol": {
+      "type": "string",
+      "minLength": 1,
+      "examples": [
+        "m",
+        "degF"
+      ]
+    },
+    "dimension": {
+      "$ref": "dimension.schema.json"
+    },
+    "scale": {
+      "type": "string",
+      "description": "Decimal scale factor to the base SI unit, stored as a string to preserve precision.",
+      "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$",
+      "examples": [
+        "1",
+        "0.0254",
+        "5.555555555555555555555555556e-1"
+      ]
+    },
+    "offset": {
+      "type": "string",
+      "description": "Affine offset to base units. Use '0' for ordinary composable units.",
+      "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$",
+      "default": "0"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "prefixable": {
+      "type": "boolean",
+      "description": "Whether metric prefixes may be applied to this unit name or symbol.",
+      "default": false
+    }
+  },
+  "required": [
+    "name",
+    "symbol",
+    "dimension",
+    "scale"
+  ],
+  "examples": [
+    {
+      "name": "meter",
+      "symbol": "m",
+      "dimension": {
+        "exponents": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "scale": "1",
+      "offset": "0",
+      "aliases": [
+        "meters",
+        "metre",
+        "metres"
+      ],
+      "prefixable": true
+    }
+  ]
+}
