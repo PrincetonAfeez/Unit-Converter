@@ -1,7 +1,7 @@
 # Architecture Decision Record
 
 ## App 37 — Unit Converter
-**Scientific Units Group | Document 1 of 5**
+***Scientific Units Group | Document 1 of 5***
 
 ### Title
 Use dimensional analysis as the core correctness model for unit conversion.
